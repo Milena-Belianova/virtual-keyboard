@@ -62,10 +62,14 @@
                     border-radius: 8px;
                 }
             }
-
             .key-dark {
                 font-weight: 600;
                 background-color: #222222;
+            }
+            .highlighted {
+                background-color: rgb(223, 182, 50);
+                transform: scale(0.9);
+                border-radius: 8px;
             }
         }
     }
