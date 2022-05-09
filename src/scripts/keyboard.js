@@ -375,55 +375,56 @@ export class Keyboard {
     this.textArea.addEventListener('keydown', (event) => {
       if (KEYS[event.code]) {
         KEYS[event.code].setHighlighted(true);
-      } else {
-        console.log(KEYS[event.code]);
-      }
-      if (KEYS[event.code].code === 'Tab') {
-        event.preventDefault();
-        this.textArea.value += '    ';
-      }
-      if (KEYS[event.code].code === 'CapsLock' && !event.repeat) {
-        if (!this.capsPressed) {
-          this.caps = true;
-          this.capsPressed = true;
-          this.render();
-        } else {
-          this.caps = false;
-          this.capsPressed = false;
+
+        if (KEYS[event.code].code === 'Tab') {
+          event.preventDefault();
+          this.textArea.value += '    ';
+        }
+        if (KEYS[event.code].code === 'CapsLock' && !event.repeat) {
+          if (!this.capsPressed) {
+            this.caps = true;
+            this.capsPressed = true;
+            this.render();
+          } else {
+            this.caps = false;
+            this.capsPressed = false;
+            this.render();
+          }
+        }
+        if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
+          this.shift = true;
           this.render();
         }
-      }
-      if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
-        this.shift = true;
-        this.render();
-      }
-      if (event.ctrlKey && event.altKey) {
-        if (this.lang === 'en') {
-          this.lang = 'ru';
-        } else {
-          this.lang = 'en';
+        if (event.ctrlKey && event.altKey) {
+          if (this.lang === 'en') {
+            this.lang = 'ru';
+          } else {
+            this.lang = 'en';
+          }
+          localStorage.setItem('lang', this.lang);
+          this.render();
         }
-        localStorage.setItem('lang', this.lang);
-        this.render();
-      }
-      if (KEYS[event.code].code === 'ArrowUp') {
-        event.preventDefault();
-        insertInTextarea(this.textArea, '▲');
-      }
-      if (KEYS[event.code].code === 'ArrowDown') {
-        event.preventDefault();
-        insertInTextarea(this.textArea, '▼');
+        if (KEYS[event.code].code === 'ArrowUp') {
+          event.preventDefault();
+          insertInTextarea(this.textArea, '▲');
+        }
+        if (KEYS[event.code].code === 'ArrowDown') {
+          event.preventDefault();
+          insertInTextarea(this.textArea, '▼');
+        }
       }
     });
 
     this.textArea.addEventListener('keyup', (event) => {
-      KEYS[event.code].setHighlighted(false);
-      if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
-        this.shift = false;
-        this.render();
-      }
-      if (KEYS[event.code].code === 'CapsLock' && this.capsPressed) {
-        KEYS[event.code].setHighlighted(true);
+      if (KEYS[event.code]) {
+        KEYS[event.code].setHighlighted(false);
+        if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
+          this.shift = false;
+          this.render();
+        }
+        if (KEYS[event.code].code === 'CapsLock' && this.capsPressed) {
+          KEYS[event.code].setHighlighted(true);
+        }
       }
     });
   }
