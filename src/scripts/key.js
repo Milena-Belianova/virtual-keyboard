@@ -1,39 +1,56 @@
+import { insertInTextarea } from './insert-in-textarea';
+
 export class Key {
   constructor({
-    text = 'q/й', width = '40px', code, dark = false, textArea, highlighted = false, handleClick = () => {
-      this.textArea.value += this.getText(this.lang, this.shift);
-    },
+    text = 'q/й', width = '40px', code, dark = false, textArea, highlighted = false, handleMouseDown = () => {
+      insertInTextarea(this.textArea, this.getText(this.lang, this.shift, this.caps));
+    }, handleMouseUp,
   }) {
-    this.text = text; // qQйЙ
+    this.text = text;
     this.textArea = textArea;
     this.width = width;
     this.code = code;
     this.dark = dark;
     this.highlighted = highlighted;
-    this.handleClick = handleClick;
+    this.handleMouseDown = handleMouseDown;
+    this.handleMouseUp = handleMouseUp;
     this.keyContainer = document.createElement('div');
-    this.keyContainer.addEventListener('click', this.handleClick);
+    this.keyContainer.addEventListener('mousedown', (event) => {
+      this.handleMouseDown(event);
+      const handler = (ievent) => {
+        if (this.handleMouseUp) { this.handleMouseUp(ievent); }
+        document.removeEventListener('mouseup', handler);
+      };
+      document.addEventListener('mouseup', handler);
+    });
+    this.keyContainer.addEventListener('mouseup', this.handleMouseUp);
   }
 
   setHighlighted(value) {
     this.highlighted = value;
-    this.render(this.lang, this.shift);
+    this.render(this.lang, this.shift, this.caps);
   }
 
-  getText(lang, shift) {
+  getText(lang, shift, caps) {
     if (this.dark) return this.text;
     const letters = this.text.split('');
-    if (lang === 'en' && !shift) { return letters[0]; }
-    if (lang === 'en' && shift) { return letters[1]; }
-    if (lang === 'ru' && !shift) { return letters[2]; }
-    if (lang === 'ru' && shift) { return letters[3]; }
+    const [lowerEN, upperEN, lowerRU, upperRU, capsEN, capsRU, capsShiftEN, capsShiftRU] = letters;
+    if (lang === 'en' && !shift && !caps) { return lowerEN; }
+    if (lang === 'en' && shift && !caps) { return upperEN; }
+    if (lang === 'ru' && !shift && !caps) { return lowerRU; }
+    if (lang === 'ru' && shift && !caps) { return upperRU; }
+    if (lang === 'en' && caps && !shift) { return capsEN; }
+    if (lang === 'ru' && caps && !shift) { return capsRU; }
+    if (lang === 'en' && caps && shift) { return capsShiftEN; }
+    if (lang === 'ru' && caps && shift) { return capsShiftRU; }
     return '';
   }
 
-  render(lang, shift) {
+  render(lang, shift, caps) {
     this.lang = lang;
     this.shift = shift;
-    this.keyContainer.innerHTML = this.getText(lang, shift);
+    this.caps = caps;
+    this.keyContainer.innerHTML = this.getText(lang, shift, caps);
     this.keyContainer.style.width = this.width;
     this.keyContainer.classList.add('key');
     if (this.dark === true) {

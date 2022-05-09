@@ -1,51 +1,54 @@
 import { Key } from './key';
+import { insertInTextarea } from './insert-in-textarea';
 
 export class Keyboard {
   constructor(element, textArea) {
     this.element = element;
     this.textArea = textArea;
     this.caps = false;
-    this.lang = 'en';
+    this.lang = localStorage.getItem('lang') || 'en';
+    this.shift = false;
+    this.capsPressed = false;
 
     const KEYS = {
       Backquote: new Key({
-        text: '`~ёЁ', code: 'Backquote', textArea: this.textArea,
+        text: '`~ёЁ`Ё~ё', code: 'Backquote', textArea: this.textArea,
       }),
       Digit1: new Key({
-        text: '1!1!', code: 'Digit1', textArea: this.textArea,
+        text: '1!1!11!!', code: 'Digit1', textArea: this.textArea,
       }),
       Digit2: new Key({
-        text: '2@2"', code: 'Digit2', textArea: this.textArea,
+        text: '2@2"22@"', code: 'Digit2', textArea: this.textArea,
       }),
       Digit3: new Key({
-        text: '3#3№', code: 'Digit3', textArea: this.textArea,
+        text: '3#3№33#№', code: 'Digit3', textArea: this.textArea,
       }),
       Digit4: new Key({
-        text: '4$4;', code: 'Digit4', textArea: this.textArea,
+        text: '4$4;44$;', code: 'Digit4', textArea: this.textArea,
       }),
       Digit5: new Key({
-        text: '5%5%', code: 'Digit5', textArea: this.textArea,
+        text: '5%5%55%%', code: 'Digit5', textArea: this.textArea,
       }),
       Digit6: new Key({
-        text: '6^6:', code: 'Digit6', textArea: this.textArea,
+        text: '6^6:66^:', code: 'Digit6', textArea: this.textArea,
       }),
       Digit7: new Key({
-        text: '7&7?', code: 'Digit7', textArea: this.textArea,
+        text: '7&7?77&?', code: 'Digit7', textArea: this.textArea,
       }),
       Digit8: new Key({
-        text: '8*8*', code: 'Digit8', textArea: this.textArea,
+        text: '8*8*88**', code: 'Digit8', textArea: this.textArea,
       }),
       Digit9: new Key({
-        text: '9(9(', code: 'Digit9', textArea: this.textArea,
+        text: '9(9(99((', code: 'Digit9', textArea: this.textArea,
       }),
       Digit0: new Key({
-        text: '0)0)', code: 'Digit0', textArea: this.textArea,
+        text: '0)0)00))', code: 'Digit0', textArea: this.textArea,
       }),
       Minus: new Key({
-        text: '-_-_', code: 'Minus', textArea: this.textArea,
+        text: '-_-_--__', code: 'Minus', textArea: this.textArea,
       }),
       Equal: new Key({
-        text: '=+=+', code: 'Equal', textArea: this.textArea,
+        text: '=+=+==++', code: 'Equal', textArea: this.textArea,
       }),
       Backspace: new Key({
         text: 'Backspace',
@@ -53,7 +56,7 @@ export class Keyboard {
         code: 'Backspace',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
+        handleMouseDown: () => {
           const cursorStart = this.textArea.selectionStart;
           this.textArea.value = this.textArea.value.slice(0, this.textArea.selectionStart - 1)
             + this.textArea.value.slice(this.textArea.selectionStart);
@@ -68,48 +71,49 @@ export class Keyboard {
         code: 'Tab',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
-          this.textArea.value += '    ';
+        handleMouseDown: () => {
+          // eslint-disable-next-line no-tabs
+          insertInTextarea(this.textArea, '	');
         },
       }),
       KeyQ: new Key({
-        text: 'qQйЙ', code: 'KeyQ', textArea: this.textArea,
+        text: 'qQйЙQЙqй', code: 'KeyQ', textArea: this.textArea,
       }),
       KeyW: new Key({
-        text: 'wWцЦ', code: 'KeyW', textArea: this.textArea,
+        text: 'wWцЦWЦwц', code: 'KeyW', textArea: this.textArea,
       }),
       KeyE: new Key({
-        text: 'eEуУ', code: 'KeyE', textArea: this.textArea,
+        text: 'eEуУEУeу', code: 'KeyE', textArea: this.textArea,
       }),
       KeyR: new Key({
-        text: 'rRкК', code: 'KeyR', textArea: this.textArea,
+        text: 'rRкКRКrк', code: 'KeyR', textArea: this.textArea,
       }),
       KeyT: new Key({
-        text: 'tTеЕ', code: 'KeyT', textArea: this.textArea,
+        text: 'tTеЕTЕtе', code: 'KeyT', textArea: this.textArea,
       }),
       KeyY: new Key({
-        text: 'yYнН', code: 'KeyY', textArea: this.textArea,
+        text: 'yYнНYНyн', code: 'KeyY', textArea: this.textArea,
       }),
       KeyU: new Key({
-        text: 'uUгГ', code: 'KeyU', textArea: this.textArea,
+        text: 'uUгГUГuг', code: 'KeyU', textArea: this.textArea,
       }),
       KeyI: new Key({
-        text: 'iIшШ', code: 'KeyI', textArea: this.textArea,
+        text: 'iIшШIШiш', code: 'KeyI', textArea: this.textArea,
       }),
       KeyO: new Key({
-        text: 'oOщЩ', code: 'KeyO', textArea: this.textArea,
+        text: 'oOщЩOЩoщ', code: 'KeyO', textArea: this.textArea,
       }),
       KeyP: new Key({
-        text: 'pPзЗ', code: 'KeyP', textArea: this.textArea,
+        text: 'pPзЗPЗpз', code: 'KeyP', textArea: this.textArea,
       }),
       BracketLeft: new Key({
-        text: '[{хХ', code: 'BracketLeft', textArea: this.textArea,
+        text: '[{хХ[Х{х', code: 'BracketLeft', textArea: this.textArea,
       }),
       BracketRight: new Key({
-        text: ']}ъЪ', code: 'BracketRight', textArea: this.textArea,
+        text: ']}ъЪ]Ъ}ъ', code: 'BracketRight', textArea: this.textArea,
       }),
       Backslash: new Key({
-        text: '\\|\\/', code: 'Backslash', textArea: this.textArea,
+        text: '\\|\\/\\\\|/', code: 'Backslash', textArea: this.textArea,
       }),
       Delete: new Key({
         text: 'Del',
@@ -117,7 +121,7 @@ export class Keyboard {
         code: 'Delete',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
+        handleMouseDown: () => {
           if (this.textArea.selectionStart <= this.textArea.value.length) {
             const cursorStart = this.textArea.selectionStart;
             this.textArea.value = this.textArea.value.slice(0, this.textArea.selectionStart)
@@ -134,42 +138,52 @@ export class Keyboard {
         code: 'CapsLock',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
-          this.caps = !this.caps;
+        handleMouseDown: () => {
+          if (!this.capsPressed) {
+            this.caps = true;
+            this.capsPressed = true;
+            KEYS.CapsLock.setHighlighted(true);
+            this.render();
+          } else {
+            this.caps = false;
+            this.capsPressed = false;
+            KEYS.CapsLock.setHighlighted(false);
+            this.render();
+          }
         },
       }),
       KeyA: new Key({
-        text: 'aAфФ', code: 'KeyA', textArea: this.textArea,
+        text: 'aAфФAФaф', code: 'KeyA', textArea: this.textArea,
       }),
       KeyS: new Key({
-        text: 'sSыЫ', code: 'KeyS', textArea: this.textArea,
+        text: 'sSыЫSЫsы', code: 'KeyS', textArea: this.textArea,
       }),
       KeyD: new Key({
-        text: 'dDвВ', code: 'KeyD', textArea: this.textArea,
+        text: 'dDвВDВdв', code: 'KeyD', textArea: this.textArea,
       }),
       KeyF: new Key({
-        text: 'fFаА', code: 'KeyF', textArea: this.textArea,
+        text: 'fFаАFАfа', code: 'KeyF', textArea: this.textArea,
       }),
       KeyG: new Key({
-        text: 'gGпП', code: 'KeyG', textArea: this.textArea,
+        text: 'gGпПGПgп', code: 'KeyG', textArea: this.textArea,
       }),
       KeyH: new Key({
-        text: 'hHрР', code: 'KeyH', textArea: this.textArea,
+        text: 'hHрРHРhр', code: 'KeyH', textArea: this.textArea,
       }),
       KeyJ: new Key({
-        text: 'jJоО', code: 'KeyJ', textArea: this.textArea,
+        text: 'jJоОJОjо', code: 'KeyJ', textArea: this.textArea,
       }),
       KeyK: new Key({
-        text: 'kKлЛ', code: 'KeyK', textArea: this.textArea,
+        text: 'kKлЛKЛkл', code: 'KeyK', textArea: this.textArea,
       }),
       KeyL: new Key({
-        text: 'lLдД', code: 'KeyL', textArea: this.textArea,
+        text: 'lLдДLДlд', code: 'KeyL', textArea: this.textArea,
       }),
       Semicolon: new Key({
-        text: ';:жЖ', code: 'Semicolon', textArea: this.textArea,
+        text: ';:жЖ;Ж:ж', code: 'Semicolon', textArea: this.textArea,
       }),
       Quote: new Key({
-        text: '\'"эЭ', code: 'Quote', textArea: this.textArea,
+        text: '\'"эЭ\'Э"э', code: 'Quote', textArea: this.textArea,
       }),
       Enter: new Key({
         text: 'Enter',
@@ -177,71 +191,122 @@ export class Keyboard {
         code: 'Enter',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => { this.textArea.value += '\n'; },
+        handleMouseDown: () => { this.textArea.value += '\n'; },
       }),
       ShiftLeft: new Key({
-        text: 'Shift', width: '100px', code: 'ShiftLeft', dark: true, textArea: this.textArea,
+        text: 'Shift',
+        width: '100px',
+        code: 'ShiftLeft',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.shift = true;
+          this.render();
+        },
+        handleMouseUp: () => {
+          this.shift = false;
+          this.render();
+        },
       }),
       KeyZ: new Key({
-        text: 'zZяЯ', code: 'KeyZ', textArea: this.textArea,
+        text: 'zZяЯZЯzя', code: 'KeyZ', textArea: this.textArea,
       }),
       KeyX: new Key({
-        text: 'xXчЧ', code: 'KeyX', textArea: this.textArea,
+        text: 'xXчЧXЧxч', code: 'KeyX', textArea: this.textArea,
       }),
       KeyC: new Key({
-        text: 'cCсС', code: 'KeyC', textArea: this.textArea,
+        text: 'cCсСCCcс', code: 'KeyC', textArea: this.textArea,
       }),
       KeyV: new Key({
-        text: 'vVмМ', code: 'KeyV', textArea: this.textArea,
+        text: 'vVмМVМvм', code: 'KeyV', textArea: this.textArea,
       }),
       KeyB: new Key({
-        text: 'bBиИ', code: 'KeyB', textArea: this.textArea,
+        text: 'bBиИBИbи', code: 'KeyB', textArea: this.textArea,
       }),
       KeyN: new Key({
-        text: 'nNтТ', code: 'KeyN', textArea: this.textArea,
+        text: 'nNтТNТnт', code: 'KeyN', textArea: this.textArea,
       }),
       KeyM: new Key({
-        text: 'mMьЬ', code: 'KeyM', textArea: this.textArea,
+        text: 'mMьЬMЬmь', code: 'KeyM', textArea: this.textArea,
       }),
       Comma: new Key({
-        text: ',<бБ', code: 'Comma', textArea: this.textArea,
+        text: ',<бБ,Б<б', code: 'Comma', textArea: this.textArea,
       }),
       Period: new Key({
-        text: '.>юЮ', code: 'Period', textArea: this.textArea,
+        text: '.>юЮ.Ю>ю', code: 'Period', textArea: this.textArea,
       }),
       Slash: new Key({
-        text: '/?.,', code: 'Slash', textArea: this.textArea,
+        text: '/?.,/.?,', code: 'Slash', textArea: this.textArea,
       }),
       ArrowUp: new Key({
         text: '&#9650;',
         code: 'ArrowUp',
         dark: true,
         textArea: this.textArea,
+        handleMouseDown: () => {
+          insertInTextarea(this.textArea, '▲');
+        },
       }),
       ShiftRight: new Key({
-        text: 'Shift', width: '86px', code: 'ShiftRight', dark: true, textArea: this.textArea,
+        text: 'Shift',
+        width: '86px',
+        code: 'ShiftRight',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.shift = true;
+          this.render();
+        },
+        handleMouseUp: () => {
+          this.shift = false;
+          this.render();
+        },
       }),
       ControlLeft: new Key({
-        text: 'Ctrl', code: 'ControlLeft', dark: true, textArea: this.textArea,
+        text: 'Ctrl',
+        code: 'ControlLeft',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.textArea.value += '';
+        },
       }),
       MetaLeft: new Key({
-        text: 'Win', dark: true, code: 'MetaLeft', textArea: this.textArea,
+        text: 'Win',
+        dark: true,
+        code: 'MetaLeft',
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.textArea.value += '';
+        },
       }),
       AltLeft: new Key({
-        text: 'Alt', code: 'AltLeft', dark: true, textArea: this.textArea,
+        text: 'Alt',
+        code: 'AltLeft',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.textArea.value += '';
+        },
       }),
       Space: new Key({
-        text: '&mdash;', width: '330px', code: 'Space', dark: true, textArea: this.textArea, handleClick: () => { this.textArea.value += ' '; },
+        text: '&mdash;', width: '330px', code: 'Space', dark: true, textArea: this.textArea, handleMouseDown: () => { this.textArea.value += ' '; },
       }),
       AltRight: new Key({
-        text: 'Alt', code: 'AltRight', dark: true, textArea: this.textArea,
+        text: 'Alt',
+        code: 'AltRight',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.textArea.value += '';
+        },
       }),
       ArrowLeft: new Key({
         text: '&#9668;',
         code: 'ArrowLeft',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
+        handleMouseDown: () => {
           if (this.textArea.selectionStart > 0) {
             this.textArea.selectionStart += -1;
           }
@@ -249,14 +314,20 @@ export class Keyboard {
         },
       }),
       ArrowDown: new Key({
-        text: '&#9660;', code: 'ArrowDown', dark: true, textArea: this.textArea,
+        text: '&#9660;',
+        code: 'ArrowDown',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          insertInTextarea(this.textArea, '▼');
+        },
       }),
       ArrowRight: new Key({
         text: '&#9658;',
         code: 'ArrowRight',
         dark: true,
         textArea: this.textArea,
-        handleClick: () => {
+        handleMouseDown: () => {
           if (this.textArea.selectionStart < this.textArea.value.length) {
             this.textArea.selectionStart += +1;
           }
@@ -264,7 +335,13 @@ export class Keyboard {
         },
       }),
       ControlRight: new Key({
-        text: 'Ctrl', code: 'ControlRight', dark: true, textArea: this.textArea,
+        text: 'Ctrl',
+        code: 'ControlRight',
+        dark: true,
+        textArea: this.textArea,
+        handleMouseDown: () => {
+          this.textArea.value += '';
+        },
       }),
     };
 
@@ -296,17 +373,64 @@ export class Keyboard {
     });
 
     this.textArea.addEventListener('keydown', (event) => {
-      KEYS[event.code].setHighlighted(true);
+      if (KEYS[event.code]) {
+        KEYS[event.code].setHighlighted(true);
+      } else {
+        console.log(KEYS[event.code]);
+      }
+      if (KEYS[event.code].code === 'Tab') {
+        event.preventDefault();
+        this.textArea.value += '    ';
+      }
+      if (KEYS[event.code].code === 'CapsLock' && !event.repeat) {
+        if (!this.capsPressed) {
+          this.caps = true;
+          this.capsPressed = true;
+          this.render();
+        } else {
+          this.caps = false;
+          this.capsPressed = false;
+          this.render();
+        }
+      }
+      if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
+        this.shift = true;
+        this.render();
+      }
+      if (event.ctrlKey && event.altKey) {
+        if (this.lang === 'en') {
+          this.lang = 'ru';
+        } else {
+          this.lang = 'en';
+        }
+        localStorage.setItem('lang', this.lang);
+        this.render();
+      }
+      if (KEYS[event.code].code === 'ArrowUp') {
+        event.preventDefault();
+        insertInTextarea(this.textArea, '▲');
+      }
+      if (KEYS[event.code].code === 'ArrowDown') {
+        event.preventDefault();
+        insertInTextarea(this.textArea, '▼');
+      }
     });
 
     this.textArea.addEventListener('keyup', (event) => {
       KEYS[event.code].setHighlighted(false);
+      if (KEYS[event.code].code === 'ShiftLeft' || KEYS[event.code].code === 'ShiftRight') {
+        this.shift = false;
+        this.render();
+      }
+      if (KEYS[event.code].code === 'CapsLock' && this.capsPressed) {
+        KEYS[event.code].setHighlighted(true);
+      }
     });
   }
 
   render() {
-    // this.keys.forEach((row) => {
-    //   row.forEach((key) => key.render(this.lang));
-    // });
+    this.keysLayout.forEach((row) => {
+      row.forEach((key) => key.render(this.lang, this.shift, this.caps));
+    });
   }
 }

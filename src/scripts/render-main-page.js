@@ -27,7 +27,7 @@ export const renderMainPage = (element) => {
 
   divTextContainer.classList.add('text-container');
   textOS.innerText = 'Клавиатура создана в операционной системе Windows';
-  textLangSwitch.innerText = 'Для переключения языка комбинация: левыe shift + ctrl';
+  textLangSwitch.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
   divTextContainer.appendChild(textOS);
   divTextContainer.appendChild(textLangSwitch);
   divContainer.appendChild(divTextContainer);
